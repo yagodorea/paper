@@ -1,0 +1,3 @@
+[c,lags] = xcorr(x,y); % c is the correlation, should have a clear peak
+s = lags(c==max(c)); % s is the shift you need
+y2 = circshift(y,s); % y2 should now overlap x
