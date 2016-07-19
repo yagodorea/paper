@@ -15,10 +15,12 @@ comPort = 'COM3';
 
 step = 100;
 
+fs = 600;
+anal_tw = 2*fs;
 signal_tw = 1;
 spec_tw = 10;
 
-fs = 600;
+
 
 count = 0;
 
@@ -41,8 +43,8 @@ fclose(s);
 fopen(s);
 
 
-signal = zeros(1,fs,'gpuArray');
-spec = zeros(1000,600,'gpuArray');
+signal = zeros(1,anal_tw,'gpuArray');
+spec = zeros(1000,anal_tw,'gpuArray');
 
 figure(1)
 
@@ -93,13 +95,13 @@ while (ishandle(dialogBox))
     %data = signal(:,1+tb*fs:te*fs);
     %new_signal = new_signal - mean(new_signal);
     %new_signal = new_signal/n;
-    conn_point = signal(:,fs);
-    signal(:,1:fs-step) = signal(:,step+1:fs);
-    signal(:,fs-step+1:fs) = new_signal;
+    conn_point = signal(:,step);
+    signal(:,1:anal_tw-step) = signal(:,step+1:anal_tw);
+    signal(:,anal_tw-step+1:anal_tw) = new_signal;
     
     
     %ts = spec_tw;
-    n = fs;
+    n = anal_tw;
     %dn = fs-step;
     
     
@@ -141,7 +143,7 @@ while (ishandle(dialogBox))
     
     figure(1)
     subplot(3,1,3)
-    peak = find(spec(count+1,fs/2+1:fs) == max(spec(count+1,fs/2+1:fs)));
+    peak = find(spec(count+1,anal_tw/2+1:anal_tw) == max(spec(count+1,anal_tw/2+1:anal_tw)));
     plot([(count-1)*step/fs (count)*step/fs],[oldpeak peak],'b')
     if (peak >= 1 && peak <= 12)
          st = 0:1/8000:step/fs;
