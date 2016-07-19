@@ -13,11 +13,10 @@ d = gpuDevice();
 
 comPort = 'COM3';
 
-step = 100;
-t_amostra = 1;
+step = 300;
 
 fs = 600;
-anal_tw = t_amostra*fs;
+anal_tw = 2*fs;
 signal_tw = 1;
 spec_tw = 10;
 
@@ -134,22 +133,19 @@ while (ishandle(dialogBox))
 %     end
 %     
     
-%     %print signal window
-%     figure(1)
-%     subplot(3,1,1)
-%     plot([t(1,1)-1/fs t],[conn_point gather(new_signal)],'b')
-%    % addpoints(ps,t,gather(new_signal));
-%     xlim ([(count+1)*step/fs-signal_tw (count+1)*step/fs] )
-%     hold on
-%     
+    %print signal window
+    figure(1)
+    subplot(3,1,1)
+    plot([t(1,1)-1/fs t],[conn_point gather(new_signal)],'b')
+   % addpoints(ps,t,gather(new_signal));
+    xlim ([(count+1)*step/fs-signal_tw (count+1)*step/fs] )
+    hold on
+    
     figure(1)
     subplot(3,1,3)
-    fl = 12;
-    fh = 20;
-    peak = sum(spec(count+1,(n/2+fl*fs/n):(n/2+fh*fs/n)))/(fh-fl);
-    %peak = find(spec(count+1,anal_tw/2+1:anal_tw) == max(spec(count+1,anal_tw/2+1:anal_tw)))*(fs/anal_tw);
+    peak = find(spec(count+1,anal_tw/2+1:anal_tw) == max(spec(count+1,anal_tw/2+1:anal_tw)))*(fs/anal_tw);
     plot([(count-1)*step/fs (count)*step/fs],[oldpeak peak],'b')
-    if (peak >= 0.5)
+    if (peak >= 8 && peak <= 12)
          st = 0:1/48000:step/fs;
          sf = 440;
          sa = 1;
@@ -160,7 +156,7 @@ while (ishandle(dialogBox))
     %plot((count)*step/fs,5)
     %addpoints(peaks,(count)*step/fs,5)
     xlim ([(count+1)*step/fs-spec_tw (count+1)*step/fs] )
-    ylim ([0 1])
+    ylim ([0 30])
     hold on
     
     % xlim([0 1])

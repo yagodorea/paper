@@ -30,7 +30,7 @@ t = ts*[1:n]/n;
 
 p = abs(fft(data,n));
 p = fftshift(p);
-%p = p.*conj(p)/n;
+p = p.*conj(p)/n;
 f = [-n/2:n/2-1]/n*fs;
 
 %p=p.*conj(p)/n;
